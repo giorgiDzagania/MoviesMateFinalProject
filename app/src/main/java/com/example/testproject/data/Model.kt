@@ -1,6 +1,6 @@
 package com.example.testproject.data
 
-data class Data(
-    val id: Int = 0,
+data class Model(
+    val id : Int,
     val name : String
 )
