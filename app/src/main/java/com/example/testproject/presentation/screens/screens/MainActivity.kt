@@ -19,9 +19,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //FirebaseAuth.getInstance().signOut()
         d("MyLog", user.currentUser?.email.toString())
-
-        //  FirebaseAuth.getInstance().signOut()
 
     }
 }
