@@ -1,5 +1,7 @@
 package com.example.testproject.presentation.screens.screens.registerPage
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,5 +23,14 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUp()
+    }
+
+    private fun setUp() {
+        binding.btnRegister.setOnClickListener {
+            val registrationUrl = "https://www.themoviedb.org/signup"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(registrationUrl))
+            startActivity(intent)
+        }
     }
 }
