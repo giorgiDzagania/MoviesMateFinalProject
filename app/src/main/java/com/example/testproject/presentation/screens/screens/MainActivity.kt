@@ -19,8 +19,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-<<<<<<< HEAD
-=======
         d("MyLog", user.currentUser?.email.toString())
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -35,8 +33,6 @@ class MainActivity : AppCompatActivity() {
             navGraph.setStartDestination(R.id.registerFragment)
         }
         navController.graph = navGraph
-
->>>>>>> main
     }
 }
 
