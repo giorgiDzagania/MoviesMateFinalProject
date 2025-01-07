@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testproject.data.remote.RetrofitInstance
 import com.example.testproject.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -31,7 +32,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        displayCurrentUserEmail()
+//        displayCurrentUserEmail()
 
         prepareRecyclerPopularMovies()
         displayPopularMovies()
@@ -45,14 +46,16 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun displayPopularMovies() = viewLifecycleOwner.lifecycleScope.launch {
-        service.getPopularMovies()
-        homePageAdapter.submitList(service.getPopularMovies().body()?.results)
-        d("lol","${service.getPopularMovies().body()?.results}")
-    }
+//    private fun displayCurrentUserEmail() {
+//        val email = firebaseAuth.currentUser?.email
+//        Log.d("HomeFragment", "User email: $email") // Check if email is null or not
+//        binding.userEmail.text = email ?: "No email found"
+//    }
 
-    private fun displayCurrentUserEmail() {
-        binding.userEmail.text = firebaseAuth.currentUser?.email ?: ""
+    private fun displayPopularMovies()  = viewLifecycleOwner.lifecycleScope.launch  {
+        delay(3000)
+        val email = firebaseAuth.currentUser?.email
+        Log.d("HomeFragment", "User email: $email") // Check if email is null or not
+        binding.userEmail.text = email ?: "No email found"
     }
-
 }
