@@ -21,7 +21,8 @@ class MainActivity : AppCompatActivity() {
 
         d("MyLog", user.currentUser?.email.toString())
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
