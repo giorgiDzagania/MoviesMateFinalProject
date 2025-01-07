@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.testproject.databinding.FragmentLoginBinding
-import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class LogInFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
-    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,20 +28,41 @@ class LogInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         logInUser()
+        setCollectors()
     }
+
 
     private fun logInUser() {
         binding.btnHomePage.setOnClickListener {
             val email = binding.userEmail.text.toString()
             val password = binding.password.text.toString()
+
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnSuccessListener {
-                        findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToHomeFragment())
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show()
-                    }
+                viewModel.loginUser(email, password)
+            } else {
+                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+        }
+    }
+
+    private fun setCollectors() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            // Observe successful registration
+            viewModel.loginEvent.collect {
+                findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToHomeFragment())
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            // Observe errors and show them to the user
+            viewModel.showError.collect { errorMessage ->
+                if (!errorMessage.isNullOrEmpty()) {
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
+                    // Reset UI if needed (e.g., clear input fields or focus on email)
+                    binding.userEmail.requestFocus()
+                }
             }
         }
     }

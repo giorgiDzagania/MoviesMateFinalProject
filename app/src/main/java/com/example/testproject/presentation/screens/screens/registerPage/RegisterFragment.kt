@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.testproject.core.OperationStatus
 import com.example.testproject.databinding.FragmentRegisterBinding
 import kotlinx.coroutines.launch
 
@@ -53,11 +52,13 @@ class RegisterFragment : Fragment() {
 
             // Check if any field is empty
             if (email.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
-                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
             if (password != repeatPassword) {
-                Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
             viewModel.registerNewUser(email, password)
@@ -77,7 +78,6 @@ class RegisterFragment : Fragment() {
             viewModel.showError.collect { errorMessage ->
                 if (!errorMessage.isNullOrEmpty()) {
                     Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
-
                     // Reset UI if needed (e.g., clear input fields or focus on email)
                     binding.email.requestFocus()
                 }
