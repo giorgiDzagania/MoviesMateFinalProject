@@ -36,7 +36,7 @@ class LoginViewModel : ViewModel() {
             is OperationStatus.Failure -> {
                 val errorMessage = when (status.exception) {
                     is FirebaseAuthInvalidUserException -> "User with this email does not exist"
-                    is FirebaseAuthInvalidCredentialsException -> "Incorrect password"
+                    is FirebaseAuthInvalidCredentialsException -> "Invalid email or Incorrect password"
                     else -> status.exception.message ?: "An unknown error occurred."
                 }
                 _showError.value = errorMessage // Update error state
