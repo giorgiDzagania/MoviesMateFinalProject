@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        FirebaseAuth.getInstance().signOut()
         d("MyLog", user.currentUser?.email.toString())
 
         val navHostFragment =

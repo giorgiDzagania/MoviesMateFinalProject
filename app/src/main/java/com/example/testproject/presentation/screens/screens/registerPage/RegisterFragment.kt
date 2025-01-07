@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.testproject.databinding.FragmentRegisterBinding
-import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
-    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val viewModel by viewModels<RegisterViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,32 +30,30 @@ class RegisterFragment : Fragment() {
     }
 
     private fun setUp() {
-        registerUser()
+        registerNewUser()
         redirectToLogInPage()
     }
 
+    // ---------------------- Redirect To LogIn Page -----------------
     private fun redirectToLogInPage() {
         binding.btnLoginPage.setOnClickListener {
             findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLogInFragment())
         }
     }
 
-    private fun registerUser() {
+    // ----------------------- Register User --------------------
+    private fun registerNewUser() = viewLifecycleOwner.lifecycleScope.launch {
         binding.btnRegister.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
             val repeatPassword = binding.repeatPassword.text.toString()
-            if (email.isNotEmpty() && password.isNotEmpty() && repeatPassword.isNotEmpty()
-                && password == repeatPassword){
-                firebaseAuth.createUserWithEmailAndPassword(email,password)
-                    .addOnSuccessListener {
-                        findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToHomeFragment())
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show()
-                    }
-            }
 
+            if (email.isNotEmpty() && password.isNotEmpty() && repeatPassword.isNotEmpty()
+                && password == repeatPassword
+            ) {
+                viewModel.registerNewUser(email, password)
+                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToHomeFragment())
+            }
         }
     }
 }
