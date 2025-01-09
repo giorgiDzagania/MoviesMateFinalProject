@@ -50,7 +50,6 @@ class HomeFragment : Fragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.popularMovies.collect {
-                d("Observe", "Observe: $it")
                 homePageAdapter.submitList(it?.results)
             }
         }
