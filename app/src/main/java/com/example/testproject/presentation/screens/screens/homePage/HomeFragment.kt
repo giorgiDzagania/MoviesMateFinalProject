@@ -1,7 +1,6 @@
 package com.example.testproject.presentation.screens.screens.homePage
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.testproject.data.remote.RetrofitInstance
 import com.example.testproject.databinding.FragmentHomeBinding
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 // TODO:  ////// ar dagvavisydes homepagedan ukan momxmarebels ar unda sheedzlos gadasvla tu gadava aplicaiidan unda gavides!
@@ -33,6 +28,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         super.onViewCreated(view, savedInstanceState)
         prepareRecyclerPopularMovies()
         setCollectors()
@@ -54,6 +50,7 @@ class HomeFragment : Fragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.popularMovies.collect {
+                d("Observe", "Observe: $it")
                 homePageAdapter.submitList(it?.results)
             }
         }

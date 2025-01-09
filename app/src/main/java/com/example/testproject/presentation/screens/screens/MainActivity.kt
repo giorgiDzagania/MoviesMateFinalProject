@@ -1,7 +1,6 @@
 package com.example.testproject.presentation.screens.screens
 
 import android.os.Bundle
-import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
@@ -15,12 +14,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        
         FirebaseAuth.getInstance().signOut()
-        d("MyLog", user.currentUser?.email.toString())
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -37,5 +36,3 @@ class MainActivity : AppCompatActivity() {
         navController.graph = navGraph
     }
 }
-
-//        FirebaseAuth.getInstance().signOut()

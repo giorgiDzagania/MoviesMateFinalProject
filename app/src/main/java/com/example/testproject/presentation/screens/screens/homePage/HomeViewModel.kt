@@ -48,5 +48,4 @@ class HomeViewModel : ViewModel() {
             is OperationStatus.Failure -> {}
         }
     }
-
 }
