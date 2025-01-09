@@ -64,5 +64,6 @@ class HomeFragment : Fragment() {
                     if (isLoading) View.VISIBLE else View.GONE
             }
         }
+
     }
 }
