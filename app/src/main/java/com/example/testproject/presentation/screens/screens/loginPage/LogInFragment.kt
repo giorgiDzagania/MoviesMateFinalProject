@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.testproject.databinding.FragmentLoginBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LogInFragment : Fragment() {
@@ -49,20 +50,20 @@ class LogInFragment : Fragment() {
 
     private fun setCollectors() {
         viewLifecycleOwner.lifecycleScope.launch {
-            // Observe successful registration
             viewModel.loginEvent.collect {
-                findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToHomeFragment())
+                findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToHomePageFragment())
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            // Observe errors and show them to the user
             viewModel.showError.collect { errorMessage ->
-                if (!errorMessage.isNullOrEmpty()) {
                     Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
-                    // Reset UI if needed (e.g., clear input fields or focus on email)
-                    binding.userEmail.requestFocus()
-                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isLoadingState.collect { isLoading ->
+                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
         }
     }

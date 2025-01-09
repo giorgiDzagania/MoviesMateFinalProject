@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testproject.data.remote.RetrofitInstance
 import com.example.testproject.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -55,6 +56,12 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.popularMovies.collect {
                 homePageAdapter.submitList(it?.results)
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewmodel.isLoadingState.collect { isLoading ->
+                binding.progressBarPopularMovies.visibility =
+                    if (isLoading) View.VISIBLE else View.GONE
             }
         }
     }

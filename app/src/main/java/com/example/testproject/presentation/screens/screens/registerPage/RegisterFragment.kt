@@ -1,6 +1,7 @@
 package com.example.testproject.presentation.screens.screens.registerPage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,8 +50,6 @@ class RegisterFragment : Fragment() {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
             val repeatPassword = binding.repeatPassword.text.toString()
-
-            // Check if any field is empty
             if (email.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
                 Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT)
                     .show()
@@ -66,22 +65,28 @@ class RegisterFragment : Fragment() {
     }
 
     private fun setCollectors() {
+        // SharedFlow
         viewLifecycleOwner.lifecycleScope.launch {
-            // Observe successful registration
             viewModel.registerEvent.collect {
-                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToHomeFragment())
+                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToHomePageFragment())
+            }
+        }
+
+        // SharedFlow
+        viewLifecycleOwner.lifecycleScope.launch {
+            Log.d("check", Thread.currentThread().name)
+            viewModel.showError.collect { errorMessage ->
+                if (!errorMessage.isNullOrEmpty()) {
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
+                }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            // Observe errors and show them to the user
-            viewModel.showError.collect { errorMessage ->
-                if (!errorMessage.isNullOrEmpty()) {
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
-                    // Reset UI if needed (e.g., clear input fields or focus on email)
-                    binding.email.requestFocus()
-                }
+            viewModel.isLoadingState.collect { isLoading ->
+                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
         }
+
     }
 }
