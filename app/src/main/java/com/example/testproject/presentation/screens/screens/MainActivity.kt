@@ -1,6 +1,7 @@
 package com.example.testproject.presentation.screens.screens
 
 import android.os.Bundle
+import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         
         FirebaseAuth.getInstance().signOut()
-
+        d("MyLog" , "MainActivity ${FirebaseAuth.getInstance().signOut()}")
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
