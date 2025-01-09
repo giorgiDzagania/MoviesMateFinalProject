@@ -37,5 +37,4 @@ class MainActivity : AppCompatActivity() {
         navController.graph = navGraph
     }
 }
-
 //        FirebaseAuth.getInstance().signOut()
