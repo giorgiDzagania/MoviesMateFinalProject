@@ -12,6 +12,8 @@ import com.example.testproject.databinding.ItemPopularMoviesBinding
 class HomePageAdapter :
     ListAdapter<PopularMoviesDto.ResultDto, HomePageAdapter.HomePageViewHolder>(DiffUtilCallBack()) {
 
+    var onItemClick: (movieId: Int) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomePageViewHolder {
         return HomePageViewHolder(
             ItemPopularMoviesBinding.inflate(
@@ -34,6 +36,11 @@ class HomePageAdapter :
                 .load(imageUrl)
                 .into(binding.moviePoster)
             binding.movieTitle.text = result.title
+
+            binding.root.setOnClickListener {
+                result.id?.let {onItemClick.invoke(it)}
+            }
+
         }
     }
 

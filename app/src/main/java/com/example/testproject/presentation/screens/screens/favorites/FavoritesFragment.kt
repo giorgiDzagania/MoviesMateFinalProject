@@ -1,4 +1,4 @@
-package com.example.testproject.presentation.screens.screens.favoritesFragment
+package com.example.testproject.presentation.screens.screens.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater

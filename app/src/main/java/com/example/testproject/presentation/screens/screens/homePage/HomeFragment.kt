@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testproject.data.remote.RetrofitInstance
 import com.example.testproject.databinding.FragmentHomeBinding
@@ -44,6 +45,13 @@ class HomeFragment : Fragment() {
             adapter = homePageAdapter
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+        goToDetailsFragment()
+    }
+
+    private fun goToDetailsFragment() {
+        homePageAdapter.onItemClick = { movieId ->
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId))
         }
     }
 
