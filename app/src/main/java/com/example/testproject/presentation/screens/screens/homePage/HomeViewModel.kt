@@ -17,8 +17,8 @@ class HomeViewModel : ViewModel() {
     private val userInfoEmail = FirebaseAuthRepositoryImpl()
     private val movieRepository = MoviesRepositoryImpl()
 
-    private var _userEmail = MutableSharedFlow<String>()
-    val userEmail: SharedFlow<String> = _userEmail
+    private var _userEmail = MutableStateFlow<String?>(null)
+    val userEmail: StateFlow<String?> = _userEmail
 
     private var _popularMovies = MutableStateFlow<PopularMoviesDto?>(null)
     val popularMovies: StateFlow<PopularMoviesDto?> = _popularMovies
@@ -45,6 +45,7 @@ class HomeViewModel : ViewModel() {
 
     private fun getPopularMovies() = viewModelScope.launch {
         _isLoadingState.emit(true)
+        delay(2000L)
         when (val status = movieRepository.getPopularMovies()) {
             is OperationStatus.Success -> {
                 _popularMovies.emit(status.value)

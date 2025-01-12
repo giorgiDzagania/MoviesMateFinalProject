@@ -30,4 +30,16 @@
             app:argType="integer" />
     </fragment>
 
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.testproject.presentation.screens.screens.searchPage.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search"/>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.testproject.presentation.screens.screens.profilePage.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
 </navigation>

@@ -7,40 +7,32 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.testproject.data.remote.dto.PopularMoviesDto
-import com.example.testproject.databinding.ItemPopularMoviesBinding
+import com.example.testproject.databinding.ItemTrendingMoviesBinding
 
-class HomePageAdapter :
-    ListAdapter<PopularMoviesDto.ResultDto, HomePageAdapter.HomePageViewHolder>(DiffUtilCallBack()) {
+class CarouselAdapter :
+    ListAdapter<PopularMoviesDto.ResultDto, CarouselAdapter.CarouselViewHolder>(DiffUtilCallBack()) {
 
-    var onItemClick: (movieId: Int) -> Unit = {}
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomePageViewHolder {
-        return HomePageViewHolder(
-            ItemPopularMoviesBinding.inflate(
-                LayoutInflater.from(
-                    parent.context
-                ), parent, false
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
+        return CarouselViewHolder(
+            ItemTrendingMoviesBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
         )
     }
 
-    override fun onBindViewHolder(holder: HomePageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class HomePageViewHolder(private val binding: ItemPopularMoviesBinding) :
+    inner class CarouselViewHolder(private val binding: ItemTrendingMoviesBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(result: PopularMoviesDto.ResultDto) {
             val imageUrl = "https://image.tmdb.org/t/p/w500${result.backdrop_path}"
             Glide.with(binding.moviePoster)
                 .load(imageUrl)
                 .into(binding.moviePoster)
-            binding.movieTitle.text = result.title
-
-            binding.root.setOnClickListener {
-                result.id?.let {onItemClick.invoke(it)}
-            }
-
         }
     }
 
@@ -60,4 +52,5 @@ class HomePageAdapter :
         }
 
     }
+
 }
