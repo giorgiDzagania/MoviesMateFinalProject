@@ -6,15 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.testproject.data.remote.dto.PopularMoviesDto
-import com.example.testproject.databinding.ItemTrendingMoviesBinding
+import com.example.testproject.data.remote.dto.UpcomingMoviesDto
+import com.example.testproject.databinding.ItemUpcomingMoviesBinding
 
-class CarouselAdapter :
-    ListAdapter<PopularMoviesDto.ResultDto, CarouselAdapter.CarouselViewHolder>(DiffUtilCallBack()) {
+class UpcomingMoviesAdapter :
+    ListAdapter<UpcomingMoviesDto.Result, UpcomingMoviesAdapter.UpcomingViewHolder>(DiffUtilCallBack()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
-        return CarouselViewHolder(
-            ItemTrendingMoviesBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingViewHolder {
+        return UpcomingViewHolder(
+            ItemUpcomingMoviesBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -22,13 +22,13 @@ class CarouselAdapter :
         )
     }
 
-    override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UpcomingViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class CarouselViewHolder(private val binding: ItemTrendingMoviesBinding) :
+    inner class UpcomingViewHolder(private val binding: ItemUpcomingMoviesBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(result: PopularMoviesDto.ResultDto) {
+        fun bind(result: UpcomingMoviesDto.Result) {
             val imageUrl = "https://image.tmdb.org/t/p/w500${result.backdrop_path}"
             Glide.with(binding.moviePoster)
                 .load(imageUrl)
@@ -36,20 +36,21 @@ class CarouselAdapter :
         }
     }
 
-    class DiffUtilCallBack : DiffUtil.ItemCallback<PopularMoviesDto.ResultDto>() {
+    class DiffUtilCallBack : DiffUtil.ItemCallback<UpcomingMoviesDto.Result>() {
         override fun areItemsTheSame(
-            oldItem: PopularMoviesDto.ResultDto,
-            newItem: PopularMoviesDto.ResultDto
+            oldItem: UpcomingMoviesDto.Result,
+            newItem: UpcomingMoviesDto.Result
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: PopularMoviesDto.ResultDto,
-            newItem: PopularMoviesDto.ResultDto
+            oldItem: UpcomingMoviesDto.Result,
+            newItem: UpcomingMoviesDto.Result
         ): Boolean {
             return oldItem == newItem
         }
+
 
     }
 
