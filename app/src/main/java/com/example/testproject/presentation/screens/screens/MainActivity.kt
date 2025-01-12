@@ -15,13 +15,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
-
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         FirebaseAuth.getInstance().signOut()
-        d("MyLog", user.currentUser.toString())
+        d("MyLog", user.currentUser?.email.toString())
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -38,3 +37,5 @@ class MainActivity : AppCompatActivity() {
         navController.graph = navGraph
     }
 }
+
+//        FirebaseAuth.getInstance().signOut()
