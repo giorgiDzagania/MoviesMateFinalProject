@@ -83,4 +83,8 @@ dependencies {
     // View Model
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("androidx.activity:activity-ktx:1.9.3")
+
+    // Youtube dependance
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0")
+
 }

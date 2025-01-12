@@ -1,40 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="@color/black">
 
     <TextView
         android:id="@+id/userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textSize="26sp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="www@gmail.com" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPopularMovies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userEmail"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         android:text="Popular Movies"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        android:textSize="23sp"
         android:textStyle="bold"
-        android:textSize="32dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userEmail" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/popularMoviesRv"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvPopularMovies"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_popular_movies" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressBarPopularMovies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/popularMoviesRv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textviewTrending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:text="Trending"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/popularMoviesRv" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trendingRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textviewTrending"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_popular_movies"
-        tools:itemCount="1"/>
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_trending_movies"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,21 +1,23 @@
 package com.example.testproject.presentation.screens.screens.homePage
 
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testproject.databinding.FragmentHomeBinding
+import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.carousel.CarouselSnapHelper
 import kotlinx.coroutines.launch
 
-// TODO:  ////// ar dagvavisydes homepagedan ukan momxmarebels ar unda sheedzlos gadasvla tu gadava aplicaiidan unda gavides!
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val homePageAdapter = HomePageAdapter()
+    private val popularMoviesAdapter = PopularMoviesAdapter()
+    private val carouselAdapter = CarouselAdapter()
     private val viewmodel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
@@ -29,16 +31,30 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        super.onViewCreated(view, savedInstanceState)
         prepareRecyclerPopularMovies()
+        prepareCarouselRecyclerView()
         setCollectors()
+    }
+
+    private fun prepareCarouselRecyclerView() {
+        binding.trendingRv.setHasFixedSize(true)
+        binding.trendingRv.layoutManager = CarouselLayoutManager()
+        CarouselSnapHelper().attachToRecyclerView(binding.trendingRv)
+        binding.trendingRv.adapter = carouselAdapter
     }
 
     private fun prepareRecyclerPopularMovies() {
         binding.popularMoviesRv.apply {
-            adapter = homePageAdapter
+            adapter = popularMoviesAdapter
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+        goToDetailsFragment()
+    }
+
+    private fun goToDetailsFragment() {
+        popularMoviesAdapter.onItemClick = { movieId ->
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId))
         }
     }
 
@@ -50,8 +66,16 @@ class HomeFragment : Fragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.popularMovies.collect {
-                homePageAdapter.submitList(it?.results)
+                popularMoviesAdapter.submitList(it?.results)
+                carouselAdapter.submitList(it?.results)
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewmodel.isLoadingState.collect { isLoading ->
+                binding.progressBarPopularMovies.visibility =
+                    if (isLoading) View.VISIBLE else View.GONE
+            }
+        }
+
     }
 }

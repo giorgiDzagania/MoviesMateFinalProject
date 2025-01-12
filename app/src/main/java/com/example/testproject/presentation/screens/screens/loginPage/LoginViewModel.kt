@@ -17,17 +17,17 @@ class LoginViewModel : ViewModel() {
 
     private val loginRepository = FirebaseAuthRepositoryImpl()
 
-
-    private val _loginEvent = MutableSharedFlow<FirebaseUser>(replay = 0) // No old values replayed
+    private val _loginEvent = MutableSharedFlow<FirebaseUser>()
     val loginEvent: SharedFlow<FirebaseUser> = _loginEvent
 
-    private val _showError = MutableStateFlow<String?>(null) // Use StateFlow for latest state
-    val showError: StateFlow<String?> = _showError
+    private val _showError = MutableSharedFlow<String?>()
+    val showError: SharedFlow<String?> = _showError
+
+    private val _isLoadingState = MutableStateFlow(false)
+    val isLoadingState: StateFlow<Boolean> = _isLoadingState
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {
-        // Clear any previous error before starting a new registration
-        _showError.value = null
-
+        _isLoadingState.emit(true)
         when (val status = loginRepository.loginUser(email, password)) {
             is OperationStatus.Success -> {
                 _loginEvent.emit(status.value)
@@ -39,8 +39,9 @@ class LoginViewModel : ViewModel() {
                     is FirebaseAuthInvalidCredentialsException -> "Invalid email or Incorrect password"
                     else -> status.exception.message ?: "An unknown error occurred."
                 }
-                _showError.value = errorMessage // Update error state
+                _showError.emit(errorMessage)
             }
         }
+        _isLoadingState.emit(false)
     }
 }
