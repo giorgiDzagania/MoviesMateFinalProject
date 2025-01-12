@@ -4,6 +4,7 @@ import com.example.testproject.core.CallHelper
 import com.example.testproject.core.OperationStatus
 import com.example.testproject.data.remote.RetrofitInstance
 import com.example.testproject.data.remote.dto.PopularMoviesDto
+import com.example.testproject.data.remote.dto.UpcomingMoviesDto
 import com.example.testproject.domain.repository.MoviesRepository
 
 class MoviesRepositoryImpl : MoviesRepository {
@@ -12,6 +13,12 @@ class MoviesRepositoryImpl : MoviesRepository {
     override suspend fun getPopularMovies(): OperationStatus<PopularMoviesDto> {
         return CallHelper.safeApiCall {
             service.getPopularMovies()
+        }
+    }
+
+    override suspend fun getUpcomingMovies(): OperationStatus<UpcomingMoviesDto> {
+        return CallHelper.safeApiCall {
+            service.getUpcomingMovies()
         }
     }
 

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val popularMoviesAdapter = PopularMoviesAdapter()
-    private val carouselAdapter = CarouselAdapter()
+    private val upcomingMoviesAdapter = UpcomingMoviesAdapter()
     private val viewmodel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
@@ -37,10 +37,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun prepareCarouselRecyclerView() {
-        binding.trendingRv.setHasFixedSize(true)
-        binding.trendingRv.layoutManager = CarouselLayoutManager()
-        CarouselSnapHelper().attachToRecyclerView(binding.trendingRv)
-        binding.trendingRv.adapter = carouselAdapter
+        binding.upcomingRv.setHasFixedSize(true)
+        binding.upcomingRv.layoutManager = CarouselLayoutManager()
+        CarouselSnapHelper().attachToRecyclerView(binding.upcomingRv)
+        binding.upcomingRv.adapter = upcomingMoviesAdapter
     }
 
     private fun prepareRecyclerPopularMovies() {
@@ -54,25 +54,40 @@ class HomeFragment : Fragment() {
 
     private fun goToDetailsFragment() {
         popularMoviesAdapter.onItemClick = { movieId ->
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId))
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
+                    movieId
+                )
+            )
         }
     }
 
     private fun setCollectors() {
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.userEmail.collect {
                 binding.userEmail.text = it
             }
         }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.popularMovies.collect {
                 popularMoviesAdapter.submitList(it?.results)
-                carouselAdapter.submitList(it?.results)
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewmodel.upcomingMovies.collect {
+                upcomingMoviesAdapter.submitList(it?.results)
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.isLoadingState.collect { isLoading ->
                 binding.progressBarPopularMovies.visibility =
+                    if (isLoading) View.VISIBLE else View.GONE
+
+                binding.progressBarUpcomingMovies.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
             }
         }

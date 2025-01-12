@@ -58,6 +58,5 @@ class PopularMoviesAdapter :
         ): Boolean {
             return oldItem == newItem
         }
-
     }
 }
