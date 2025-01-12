@@ -9,8 +9,10 @@ import com.bumptech.glide.Glide
 import com.example.testproject.data.remote.dto.PopularMoviesDto
 import com.example.testproject.databinding.ItemPopularMoviesBinding
 
-class HomePageAdapter :
-    ListAdapter<PopularMoviesDto.ResultDto, HomePageAdapter.HomePageViewHolder>(DiffUtilCallBack()) {
+class PopularMoviesAdapter :
+    ListAdapter<PopularMoviesDto.ResultDto, PopularMoviesAdapter.HomePageViewHolder>(DiffUtilCallBack()) {
+
+    var onItemClick: (movieId: Int) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomePageViewHolder {
         return HomePageViewHolder(
@@ -34,6 +36,11 @@ class HomePageAdapter :
                 .load(imageUrl)
                 .into(binding.moviePoster)
             binding.movieTitle.text = result.title
+
+            binding.root.setOnClickListener {
+                result.id?.let {onItemClick.invoke(it)}
+            }
+
         }
     }
 
