@@ -14,6 +14,4 @@ interface MoviesService {
         @Query("api_key") apiKey: String = "ecf551cd79c0550487694d36dfc0514c"
     ): Response<PopularMoviesDto>
 
-
-
 }

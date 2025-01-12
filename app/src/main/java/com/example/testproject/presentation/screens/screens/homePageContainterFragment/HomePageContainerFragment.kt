@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.testproject.R
 import com.example.testproject.databinding.FragmentHomePageBinding
 
-class HomePageFragment : Fragment() {
+class HomePageContainerFragment : Fragment() {
     private lateinit var binding: FragmentHomePageBinding
     private lateinit var navController: NavController
 
