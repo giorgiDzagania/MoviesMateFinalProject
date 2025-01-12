@@ -51,6 +51,5 @@ class HomePageAdapter :
         ): Boolean {
             return oldItem == newItem
         }
-
     }
 }
