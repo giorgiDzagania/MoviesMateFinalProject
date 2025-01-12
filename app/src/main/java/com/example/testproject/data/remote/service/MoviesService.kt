@@ -10,14 +10,15 @@ interface MoviesService {
 
     @GET("movie/popular")
     suspend fun getPopularMovies(
-        /*@Query("language") language: String = "en-US",
-        @Query("page") page: Int = 1,*/
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1,
         @Query("api_key") apiKey: String = "ecf551cd79c0550487694d36dfc0514c"
     ): Response<PopularMoviesDto>
 
 
     @GET("movie/upcoming")
     suspend fun getUpcomingMovies(
+        @Query("page") page: Int = 2,
         @Query("api_key") apiKey: String = "ecf551cd79c0550487694d36dfc0514c"
     ) : Response<UpcomingMoviesDto>
 
