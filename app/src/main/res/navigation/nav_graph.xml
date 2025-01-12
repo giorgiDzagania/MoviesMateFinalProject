@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/homePageFragment"
-        android:name="com.example.testproject.presentation.screens.screens.homePageContainterFragment.HomePageContainerFragment"
+        android:name="com.example.testproject.presentation.screens.screens.homePageContainterFragment.HomePageFragment"
         android:label="fragment_home_page"
         tools:layout="@layout/fragment_home_page" />
 
