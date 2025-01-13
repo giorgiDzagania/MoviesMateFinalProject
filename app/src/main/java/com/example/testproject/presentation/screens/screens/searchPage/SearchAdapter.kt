@@ -12,6 +12,8 @@ import com.example.testproject.databinding.ItemAllMoviesBinding
 
 class SearchAdapter : ListAdapter<MovieDto, SearchAdapter.MovieViewHolder>(MovieDiffCallback()) {
 
+    var onItemClick: (movieId: Int) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val binding = ItemAllMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MovieViewHolder(binding)
@@ -37,6 +39,10 @@ class SearchAdapter : ListAdapter<MovieDto, SearchAdapter.MovieViewHolder>(Movie
                     .into(binding.ivMoviePoster)
             }
             binding.tvMovieTitle.text = movie.title
+
+            binding.root.setOnClickListener {
+                movie.id.let {onItemClick.invoke(it)}
+            }
         }
     }
 

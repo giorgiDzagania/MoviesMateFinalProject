@@ -28,7 +28,6 @@ class HomeViewModel : ViewModel() {
     private val _isLoadingState = MutableStateFlow(false)
     val isLoadingState: StateFlow<Boolean> = _isLoadingState
 
-
     init {
         getUserEmail()
         getPopularMovies()

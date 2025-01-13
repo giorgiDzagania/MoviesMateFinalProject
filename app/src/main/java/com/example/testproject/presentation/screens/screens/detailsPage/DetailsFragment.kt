@@ -38,7 +38,6 @@ class DetailsFragment : Fragment() {
 
         // Attach YouTubePlayerView to lifecycle
         lifecycle.addObserver(binding.youtubeVideo)
-
         getMovieDetails()
         setCollectors()
 
@@ -54,29 +53,40 @@ class DetailsFragment : Fragment() {
             viewModel.movieDetails.collect {
                 binding.titleTv.text = it?.original_title
                 binding.raitingTv.text = it?.vote_average.toString()
+                binding.releaseDateTv.text = it?.release_date.toString()
+                binding.genre.text = it?.genres?.joinToString(", ") { it.name } ?: ""
+                binding.overviewTv.text = it?.overview.toString()
             }
         }
 
         // Trailer
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.videoTrailer.collect { videos ->
-                val trailer = videos?.results?.firstOrNull()?.key
+                val trailer = videos?.results
+                    ?.filter { it.type.equals("Trailer", ignoreCase = true) }
+                    ?.firstOrNull { it.site.equals("YouTube", ignoreCase = true) }
+                    ?.key
                 binding.youtubeVideo.addYouTubePlayerListener(object :
                     AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         if (trailer != null) {
-                            youTubePlayer.loadVideo(trailer, 0f)
-                        } // Load the trailer by its key
+                            youTubePlayer.cueVideo(trailer, 0f)
+                        }
                     }
                 })
-
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isLoadingState.collect { isLoading ->
+                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
+            }
+        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Remove YouTubePlayerView from lifecycle observer and clear binding
         lifecycle.removeObserver(binding.youtubeVideo)
         _binding = null
     }

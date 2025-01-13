@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.testproject.databinding.FragmentSearchBinding
 import kotlinx.coroutines.launch
@@ -34,15 +35,24 @@ class SearchFragment : Fragment() {
         setupSearchRecyclerView()
         setCollectors()
         setupSearchQueryListener()
+        goToDetailsFragment()
+    }
+
+    private fun goToDetailsFragment() {
+        searchAdapter.onItemClick = { moveId ->
+            findNavController().navigate(
+                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(moveId))
+        }
     }
 
     private fun setupSearchQueryListener() {
-        binding.btnSearch.addTextChangedListener(object: TextWatcher{
+        binding.btnSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(text: Editable?) {
                 val query = text.toString()
-                viewModel.onSearchQueryChanged(query)            }
+                viewModel.onSearchQueryChanged(query)
+            }
         })
     }
 

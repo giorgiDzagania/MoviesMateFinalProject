@@ -7,6 +7,7 @@ import com.example.testproject.core.OperationStatus
 import com.example.testproject.data.remote.dto.MovieDetailsDto
 import com.example.testproject.data.remote.dto.VideosDto
 import com.example.testproject.data.repository.MoviesRepositoryImpl
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -24,8 +25,11 @@ class DetailsViewModel : ViewModel() {
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> get() = _errorMessage
 
+    private val _isLoadingState = MutableStateFlow(false)
+    val isLoadingState: StateFlow<Boolean> = _isLoadingState
 
     fun fetchMovieDetailsAndTrailer(movieId: String) = viewModelScope.launch {
+        _isLoadingState.emit(true)
         try {
             // Fetch Movie Details
             when (val detailsResult = moviesRepository.getMovieDetails(movieId)) {
@@ -41,22 +45,7 @@ class DetailsViewModel : ViewModel() {
         } catch (e: Exception) {
             _errorMessage.emit("An unexpected error occurred: $e")
         }
+        _isLoadingState.emit(false)
     }
 
-   /*
-
-    fun getMovieDetails(movieId: String) = viewModelScope.launch {
-
-
-        when (val status = moviesRepository.getMovieDetails(movieId)) {
-            is OperationStatus.Success -> {
-                _movieDetails.emit(status.value)
-            }
-
-            is OperationStatus.Failure -> {
-                _errorMessage.emit("Failed to fetch data: ${status.exception}")
-            }
-        }
-
-    }*/
 }

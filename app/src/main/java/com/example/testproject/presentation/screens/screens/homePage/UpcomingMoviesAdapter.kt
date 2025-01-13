@@ -12,6 +12,8 @@ import com.example.testproject.databinding.ItemUpcomingMoviesBinding
 class UpcomingMoviesAdapter :
     ListAdapter<UpcomingMoviesDto.Result, UpcomingMoviesAdapter.UpcomingViewHolder>(DiffUtilCallBack()) {
 
+    var onItemClick: (movieId: Int) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingViewHolder {
         return UpcomingViewHolder(
             ItemUpcomingMoviesBinding.inflate(
@@ -33,6 +35,10 @@ class UpcomingMoviesAdapter :
             Glide.with(binding.moviePoster)
                 .load(imageUrl)
                 .into(binding.moviePoster)
+
+            binding.root.setOnClickListener {
+                result.id.let {onItemClick.invoke(it)}
+            }
         }
     }
 

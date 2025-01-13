@@ -1,35 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
         android:id="@+id/youtubeVideo"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="260dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/youtubeVideo"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:text="Movie"
+        android:textColor="@color/white"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/youtubeVideo" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/releaseDateLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Release Date:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTv" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/releaseDateTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Release Date:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@id/releaseDateLayout"
+        app:layout_constraintStart_toEndOf="@id/releaseDateLayout"
+        app:layout_constraintTop_toTopOf="@id/releaseDateLayout"
+        tools:text="19:20:24" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:text="Rating:"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/raitingTv"
+        app:layout_constraintEnd_toStartOf="@id/raitingTv"
+        app:layout_constraintTop_toTopOf="@id/raitingTv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/raitingTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="IMDB"
         android:layout_margin="18dp"
+        android:text="7.504"
+        android:textColor="@color/yellow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/youtubeVideo" />
+        app:layout_constraintTop_toTopOf="@id/releaseDateLayout" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/genreLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Genre:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/releaseDateLayout" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Comedy"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/genreLayout"
+        app:layout_constraintStart_toEndOf="@id/genreLayout"
+        app:layout_constraintTop_toTopOf="@id/genreLayout" />
+
+    <View
+        android:id="@+id/blankLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@color/darkGray"
+        app:layout_constraintTop_toBottomOf="@id/genre" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/synopsisLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Synopsis"
+        android:textColor="@color/red"
+        android:textSize="23sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/blankLine" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/overviewTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/synopsisLayout"
+        app:layout_constraintStart_toStartOf="@id/synopsisLayout"
+        tools:text="asdkaslkdjlkjlkklajdlkasdj"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/white"
+        android:letterSpacing="0.01"
+        android:textSize="16sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,6 +34,7 @@ class HomeFragment : Fragment() {
         prepareRecyclerPopularMovies()
         prepareCarouselRecyclerView()
         setCollectors()
+        goToDetailsFragment()
     }
 
     private fun prepareCarouselRecyclerView() {
@@ -49,16 +50,16 @@ class HomeFragment : Fragment() {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
-        goToDetailsFragment()
     }
 
     private fun goToDetailsFragment() {
         popularMoviesAdapter.onItemClick = { movieId ->
             findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                    movieId
-                )
-            )
+                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId))
+        }
+        upcomingMoviesAdapter.onItemClick = { movieId ->
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId))
         }
     }
 

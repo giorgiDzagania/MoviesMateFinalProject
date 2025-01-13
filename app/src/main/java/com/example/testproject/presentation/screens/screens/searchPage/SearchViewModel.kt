@@ -35,7 +35,7 @@ class SearchViewModel : ViewModel() {
     }
 
     private fun searchMovies(query: String) = viewModelScope.launch {
-        _isLoading.emit(true)  // Start loading
+        _isLoading.emit(true)
         when (val status = moviesRepo.getSearchedMovie(query = query)) {
             is OperationStatus.Success -> {
                 _searchedMovies.emit(status.value)
