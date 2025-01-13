@@ -61,14 +61,17 @@ class DetailsFragment : Fragment() {
         // Trailer
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.videoTrailer.collect { videos ->
-                videos?.results?.firstOrNull { it.type == "key" }?.let { trailer ->
-                    binding.youtubeVideo.addYouTubePlayerListener(object :
-                        AbstractYouTubePlayerListener() {
-                        override fun onReady(youTubePlayer: YouTubePlayer) {
-                            youTubePlayer.loadVideo(trailer.key, 0f) // Load the trailer by its key
-                        }
-                    })
-                }
+                val trailer = videos?.results?.firstOrNull()?.key
+
+                binding.youtubeVideo.addYouTubePlayerListener(object :
+                    AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        if (trailer != null) {
+                            youTubePlayer.loadVideo(trailer, 0f)
+                        } // Load the trailer by its key
+                    }
+                })
+
             }
         }
     }
