@@ -39,7 +39,6 @@ class DetailsFragment : Fragment() {
         // Attach YouTubePlayerView to lifecycle
         lifecycle.addObserver(binding.youtubeVideo)
 
-
         getMovieDetails()
         setCollectors()
 
@@ -62,7 +61,6 @@ class DetailsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.videoTrailer.collect { videos ->
                 val trailer = videos?.results?.firstOrNull()?.key
-
                 binding.youtubeVideo.addYouTubePlayerListener(object :
                     AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
@@ -76,19 +74,10 @@ class DetailsFragment : Fragment() {
         }
     }
 
-
-    // ------------------------------- Youtube ---------------------------------
-    // Load the video into the YouTube player
-    private fun loadVideo(youTubePlayer: YouTubePlayer) {
-        val videoId = "Fnsb3VuBms8" // Use argument or fallback to default video ID
-        youTubePlayer.loadVideo(videoId, 0f) // Start video at 0 seconds
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         // Remove YouTubePlayerView from lifecycle observer and clear binding
         lifecycle.removeObserver(binding.youtubeVideo)
         _binding = null
     }
-
 }
