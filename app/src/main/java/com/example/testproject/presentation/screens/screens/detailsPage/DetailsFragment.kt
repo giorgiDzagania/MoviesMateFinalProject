@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +35,10 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Attach YouTubePlayerView to lifecycle
+        lifecycle.addObserver(binding.youtubeVideo)
+
         getMovieDetails()
         setCollectors()
 
@@ -57,34 +60,24 @@ class DetailsFragment : Fragment() {
         // Trailer
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.videoTrailer.collect { videos ->
-                val trailer = videos?.results?.firstOrNull { it.type.equals("Trailer", true) }
-                if (trailer != null) {
-                    initializeYouTubePlayer(trailer.key)
-                } else {
-                    showError("No trailer available.")
-                }
+                val trailer = videos?.results?.firstOrNull()?.key
+                binding.youtubeVideo.addYouTubePlayerListener(object :
+                    AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        if (trailer != null) {
+                            youTubePlayer.loadVideo(trailer, 0f)
+                        } // Load the trailer by its key
+                    }
+                })
+
             }
         }
     }
 
-    private fun initializeYouTubePlayer(videoKey: String) {
-        binding.youtubeVideo.addYouTubePlayerListener(object :
-            AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: YouTubePlayer) {
-                youTubePlayer.loadVideo(videoKey, 0f)
-            }
-        })
-    }
-
-    private fun showError(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        // Remove YouTubePlayerView lifecycle observer and clear binding
+        // Remove YouTubePlayerView from lifecycle observer and clear binding
         lifecycle.removeObserver(binding.youtubeVideo)
         _binding = null
     }
-
 }
