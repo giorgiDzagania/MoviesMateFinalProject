@@ -1,10 +1,8 @@
 package com.example.testproject.data.repository
 
-import android.util.Log
 import com.example.testproject.core.CallHelper
 import com.example.testproject.core.OperationStatus
 import com.example.testproject.domain.repository.FirebaseAuthRepository
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await

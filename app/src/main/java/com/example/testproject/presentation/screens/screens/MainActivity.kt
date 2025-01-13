@@ -23,21 +23,23 @@ class MainActivity : AppCompatActivity() {
 //        FirebaseAuth.getInstance().signOut()
         d("MyLog", user.currentUser?.email.toString())
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
         // Uses id uchiravs
         if (user.currentUser != null) {
-            Log.d("MainActivity","${user.currentUser?.uid}")
+            Log.d("MainActivity", "${user.currentUser?.uid}")
             // User is already logged in, navigate to HomeFragment
             navGraph.setStartDestination(R.id.homePageFragment)
         } else {
-            Log.d("MainActivity2","${user.currentUser?.uid}")
+            Log.d("MainActivity2", "${user.currentUser?.uid}")
             // User is not logged in, navigate to RegisterFragment
             navGraph.setStartDestination(R.id.registerFragment)
         }
         navController.graph = navGraph
     }
+
 }
 //        FirebaseAuth.getInstance().signOut()
