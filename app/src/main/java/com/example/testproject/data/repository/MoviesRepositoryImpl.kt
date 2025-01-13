@@ -3,9 +3,11 @@ package com.example.testproject.data.repository
 import com.example.testproject.core.CallHelper
 import com.example.testproject.core.OperationStatus
 import com.example.testproject.data.remote.RetrofitInstance
+import com.example.testproject.data.remote.dto.MovieDetailsDto
 import com.example.testproject.data.remote.dto.MovieDto
 import com.example.testproject.data.remote.dto.PopularMoviesDto
 import com.example.testproject.data.remote.dto.UpcomingMoviesDto
+import com.example.testproject.data.remote.dto.VideosDto
 import com.example.testproject.domain.repository.MoviesRepository
 
 class MoviesRepositoryImpl : MoviesRepository {
@@ -26,6 +28,18 @@ class MoviesRepositoryImpl : MoviesRepository {
     override suspend fun getSearchedMovie(query: String): OperationStatus<List<MovieDto>> {
         return CallHelper.safeApiResponseCall {
             service.searchMovies(query = query)
+        }
+    }
+
+    override suspend fun getMovieDetails(movieId: String): OperationStatus<MovieDetailsDto> {
+        return CallHelper.safeApiCall {
+            service.getMovieDetails(movieId)
+        }
+    }
+
+    override suspend fun getVideoTrailer(movieId: String): OperationStatus<VideosDto> {
+        return CallHelper.safeApiCall {
+            service.getVideoTrailer(movieId)
         }
     }
 
