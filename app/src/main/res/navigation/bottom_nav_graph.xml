@@ -19,7 +19,11 @@
         android:id="@+id/favoritesFragment"
         android:name="com.example.testproject.presentation.screens.screens.favorites.FavoritesFragment"
         android:label="FavoritesFragment"
-        tools:layout="@layout/fragment_favorites"/>
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.testproject.presentation.screens.screens.detailsPage.DetailsFragment"

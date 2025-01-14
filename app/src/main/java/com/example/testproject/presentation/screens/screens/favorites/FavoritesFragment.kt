@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.testproject.databinding.FragmentFavoritesBinding
 import kotlinx.coroutines.flow.collect
@@ -32,6 +33,13 @@ class FavoritesFragment : Fragment() {
         setCollectors()
         deleteMovieFromFavorites()
         updateFavorites()
+        goToDetailsFragment()
+    }
+
+    private fun goToDetailsFragment() {
+        favoritesAdapter.onItemClick = {movie->
+            findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(movie.id))
+        }
     }
 
     private fun updateFavorites() {
