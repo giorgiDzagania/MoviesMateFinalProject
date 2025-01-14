@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.testproject.data.toMovies
 import com.example.testproject.databinding.FragmentHomeBinding
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
         prepareCarouselRecyclerView()
         setCollectors()
         goToDetailsFragment()
+        clickToStar()
     }
 
     private fun prepareCarouselRecyclerView() {
@@ -52,14 +54,22 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun clickToStar() {
+        upcomingMoviesAdapter.onStarClick = { movie ->
+            viewmodel.saveMovie(movie = movie.toMovies())
+        }
+    }
+
     private fun goToDetailsFragment() {
         popularMoviesAdapter.onItemClick = { movieId ->
             findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId))
+                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId)
+            )
         }
         upcomingMoviesAdapter.onItemClick = { movieId ->
             findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId))
+                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId)
+            )
         }
     }
 
@@ -87,7 +97,6 @@ class HomeFragment : Fragment() {
             viewmodel.isLoadingState.collect { isLoading ->
                 binding.progressBarPopularMovies.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
-
                 binding.progressBarUpcomingMovies.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
             }

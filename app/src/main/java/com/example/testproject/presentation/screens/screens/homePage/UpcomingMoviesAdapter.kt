@@ -14,6 +14,8 @@ class UpcomingMoviesAdapter :
 
     var onItemClick: (movieId: Int) -> Unit = {}
 
+    var onStarClick: (movie: UpcomingMoviesDto.Result) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingViewHolder {
         return UpcomingViewHolder(
             ItemUpcomingMoviesBinding.inflate(
@@ -39,6 +41,10 @@ class UpcomingMoviesAdapter :
             binding.root.setOnClickListener {
                 result.id.let {onItemClick.invoke(it)}
             }
+
+            binding.favoritesStar.setOnClickListener {
+                onStarClick.invoke(result)
+            }
         }
     }
 
@@ -56,7 +62,6 @@ class UpcomingMoviesAdapter :
         ): Boolean {
             return oldItem == newItem
         }
-
 
     }
 

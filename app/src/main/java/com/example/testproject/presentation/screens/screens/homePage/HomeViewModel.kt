@@ -7,6 +7,10 @@ import com.example.testproject.data.remote.dto.PopularMoviesDto
 import com.example.testproject.data.remote.dto.UpcomingMoviesDto
 import com.example.testproject.data.repository.FirebaseAuthRepositoryImpl
 import com.example.testproject.data.repository.MoviesRepositoryImpl
+import com.example.testproject.domain.model.Movies
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,8 +34,7 @@ class HomeViewModel : ViewModel() {
 
     init {
         getUserEmail()
-        getPopularMovies()
-        getUpcomingMovies()
+        fetchAllMovies()
     }
 
     private fun getUserEmail() = viewModelScope.launch {
@@ -46,9 +49,22 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun getPopularMovies() = viewModelScope.launch {
+    private fun fetchAllMovies() = viewModelScope.launch {
         _isLoadingState.emit(true)
-        delay(3000L)
+        coroutineScope {
+            try {
+                val popularMoviesJob = async { fetchPopularMovies() }
+                val upcomingMoviesJob = async { fetchUpcomingMovies() }
+                awaitAll(popularMoviesJob, upcomingMoviesJob)
+            } catch (e: Exception) {
+
+            } finally {
+                _isLoadingState.emit(false) // Hide loading
+            }
+        }
+    }
+
+    private suspend fun fetchPopularMovies() {
         when (val status = movieRepository.getPopularMovies()) {
             is OperationStatus.Success -> {
                 _popularMovies.emit(status.value)
@@ -56,11 +72,9 @@ class HomeViewModel : ViewModel() {
 
             is OperationStatus.Failure -> {}
         }
-        _isLoadingState.emit(false)
     }
 
-    private fun getUpcomingMovies() = viewModelScope.launch {
-       _isLoadingState.emit(true)
+    private suspend fun fetchUpcomingMovies() {
         when (val status = movieRepository.getUpcomingMovies()) {
             is OperationStatus.Success -> {
                 _upcomingMovies.emit(status.value)
@@ -68,6 +82,9 @@ class HomeViewModel : ViewModel() {
 
             is OperationStatus.Failure -> {}
         }
-        _isLoadingState.emit(false)
+    }
+
+    fun saveMovie(movie: Movies) = viewModelScope.launch {
+        movieRepository.saveMovie(movie = movie)
     }
 }

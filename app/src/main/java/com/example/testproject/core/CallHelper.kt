@@ -27,6 +27,17 @@ object CallHelper {
         }
     }
 
+    suspend fun <SuccessType> safeRoomCall(
+        dbCall: suspend () -> SuccessType
+    ): OperationStatus<SuccessType> {
+        return try {
+            val result = dbCall.invoke()
+            OperationStatus.Success(result)
+        } catch (e: Exception) {
+            OperationStatus.Failure(e)
+        }
+    }
+
     suspend fun <T> safeApiResponseCall(
         apiCall: suspend () -> Response<ApiResponse<T>>
     ): OperationStatus<List<T>> {

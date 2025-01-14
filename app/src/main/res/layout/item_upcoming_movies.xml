@@ -13,6 +13,14 @@
         android:layout_width="280dp"
         android:layout_height="340dp"
         android:scaleType="centerCrop"
-        tools:src="@color/red" />
+        tools:src="@tools:sample/avatars" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/favoritesStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="24dp"
+        android:src="@drawable/ic_star_off" />
 
 </com.google.android.material.carousel.MaskableFrameLayout>
