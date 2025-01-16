@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
 
     private fun clickToStar() {
         upcomingMoviesAdapter.onStarClick = { movie ->
-            viewmodel.saveMovie(movie = movie.toMovies())
+            viewmodel.saveMovie(movie)
         }
     }
 
@@ -73,6 +73,8 @@ class HomeFragment : Fragment() {
         }
     }
 
+
+    // ----------------------- Collectors ---------------
     private fun setCollectors() {
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -81,15 +83,17 @@ class HomeFragment : Fragment() {
             }
         }
 
+        // --- Popular Movie ---
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.popularMovies.collect {
-                popularMoviesAdapter.submitList(it?.results)
+                popularMoviesAdapter.submitList(it)
             }
         }
 
+        // --- Upcoming Movies ---
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.upcomingMovies.collect {
-                upcomingMoviesAdapter.submitList(it?.results)
+                upcomingMoviesAdapter.submitList(it)
             }
         }
 

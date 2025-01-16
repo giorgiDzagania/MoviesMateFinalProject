@@ -5,6 +5,7 @@ import retrofit2.Response
 
 object CallHelper {
 
+    // ------------------- Firebase --------------
     suspend fun <T> safeFirebaseCall(
         firebaseCall: suspend () -> T
     ): OperationStatus<T> {
@@ -16,6 +17,7 @@ object CallHelper {
         }
     }
 
+    // --------------------- Api -------------------
     suspend fun <T> safeApiCall(
         apiCall: suspend () -> Response<T>
     ): OperationStatus<T>{
@@ -27,6 +29,7 @@ object CallHelper {
         }
     }
 
+    // -------------------- Room ------------------------
     suspend fun <SuccessType> safeRoomCall(
         dbCall: suspend () -> SuccessType
     ): OperationStatus<SuccessType> {
@@ -38,6 +41,7 @@ object CallHelper {
         }
     }
 
+    // ------------------- Response ------------------------
     suspend fun <T> safeApiResponseCall(
         apiCall: suspend () -> Response<ApiResponse<T>>
     ): OperationStatus<List<T>> {

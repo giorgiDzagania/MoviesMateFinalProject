@@ -25,8 +25,8 @@ class FavoritesViewModel : ViewModel() {
         }
     }
 
-    fun deleteSavedMovie(movie: Movies) = viewModelScope.launch {
-        when (repository.deleteMovie(movie)) {
+    fun deleteSavedMovie(movies: Movies) = viewModelScope.launch {
+        when (repository.deleteMovie(movies)) {
             is OperationStatus.Success -> {
                 showAllSavedMovies()
             }

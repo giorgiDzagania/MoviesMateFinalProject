@@ -27,6 +27,8 @@ interface MoviesService {
         @Query("api_key") apiKey: String = "ecf551cd79c0550487694d36dfc0514c"
     ): Response<UpcomingMoviesDto>
 
+
+    // ---- Search -----
     @GET("search/movie")
     suspend fun searchMovies(
         @Query("query") query: String,

@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.testproject.databinding.FragmentFavoritesBinding
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class FavoritesFragment : Fragment() {

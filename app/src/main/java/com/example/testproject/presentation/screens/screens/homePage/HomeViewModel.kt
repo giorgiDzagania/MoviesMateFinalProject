@@ -11,7 +11,6 @@ import com.example.testproject.domain.model.Movies
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,11 +22,13 @@ class HomeViewModel : ViewModel() {
     private var _userEmail = MutableStateFlow<String?>(null)
     val userEmail: StateFlow<String?> = _userEmail
 
-    private var _popularMovies = MutableStateFlow<PopularMoviesDto?>(null)
-    val popularMovies: StateFlow<PopularMoviesDto?> = _popularMovies
+    // -- Popular Movies --
+    private var _popularMovies = MutableStateFlow<List<Movies>>(emptyList())
+    val popularMovies: StateFlow<List<Movies>> = _popularMovies
 
-    private val _upcomingMovies = MutableStateFlow<UpcomingMoviesDto?>(null)
-    val upcomingMovies: StateFlow<UpcomingMoviesDto?> = _upcomingMovies
+    // -- Upcoming Movies --
+    private val _upcomingMovies = MutableStateFlow<List<Movies>>(emptyList())
+    val upcomingMovies: StateFlow<List<Movies>> = _upcomingMovies
 
     private val _isLoadingState = MutableStateFlow(false)
     val isLoadingState: StateFlow<Boolean> = _isLoadingState
@@ -64,6 +65,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    // ---------------------- Popular Movies ------------------
     private suspend fun fetchPopularMovies() {
         when (val status = movieRepository.getPopularMovies()) {
             is OperationStatus.Success -> {
@@ -74,6 +76,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    // --------------------- Upcoming Movies -------------------
     private suspend fun fetchUpcomingMovies() {
         when (val status = movieRepository.getUpcomingMovies()) {
             is OperationStatus.Success -> {
@@ -84,7 +87,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun saveMovie(movie: Movies) = viewModelScope.launch {
-        movieRepository.saveMovie(movie = movie)
+    fun saveMovie(movies: Movies) = viewModelScope.launch {
+        movieRepository.saveMovie(movies = movies)
     }
 }

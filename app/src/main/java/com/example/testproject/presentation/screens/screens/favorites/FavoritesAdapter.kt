@@ -12,9 +12,9 @@ import com.example.testproject.domain.model.Movies
 class FavoritesAdapter :
     ListAdapter<Movies, FavoritesAdapter.FavoritesViewHolder>(DiffUtilCallBack()) {
 
-    var onItemClick: (movie: Movies) -> Unit = {}
+    var onItemClick: (movies: Movies) -> Unit = {}
 
-    var onStarClick: (movie: Movies) -> Unit = {}
+    var onStarClick: (movies: Movies) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
         return FavoritesViewHolder(

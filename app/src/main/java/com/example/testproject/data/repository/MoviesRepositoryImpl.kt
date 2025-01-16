@@ -1,6 +1,5 @@
 package com.example.testproject.data.repository
 
-import android.telecom.Call
 import com.example.testproject.MovieApplication
 import com.example.testproject.core.CallHelper
 import com.example.testproject.core.OperationStatus
@@ -9,9 +8,8 @@ import com.example.testproject.data.local.MovieDatabase
 import com.example.testproject.data.remote.RetrofitInstance
 import com.example.testproject.data.remote.dto.MovieDetailsDto
 import com.example.testproject.data.remote.dto.MovieDto
-import com.example.testproject.data.remote.dto.PopularMoviesDto
-import com.example.testproject.data.remote.dto.UpcomingMoviesDto
 import com.example.testproject.data.remote.dto.VideosDto
+import com.example.testproject.data.toListMovie
 import com.example.testproject.data.toMovies
 import com.example.testproject.data.toMoviesDbo
 import com.example.testproject.domain.model.Movies
@@ -21,24 +19,35 @@ class MoviesRepositoryImpl : MoviesRepository {
     private val service = RetrofitInstance.moviesService
     private val movieDao = MovieDatabase.create(MovieApplication.context).movieDao
 
-    override suspend fun getPopularMovies(): OperationStatus<PopularMoviesDto> {
+
+    // --------------------------- Popular Movie -----------------------------
+    override suspend fun getPopularMovies(): OperationStatus<List<Movies>> {
         return CallHelper.safeApiCall {
             service.getPopularMovies()
+        }.map { popularMoviesDto ->
+            popularMoviesDto.toListMovie()
         }
     }
 
-    override suspend fun getUpcomingMovies(): OperationStatus<UpcomingMoviesDto> {
+
+    // --------------------------- Upcoming Movies ------------------------------
+    override suspend fun getUpcomingMovies(): OperationStatus<List<Movies>> {
         return CallHelper.safeApiCall {
             service.getUpcomingMovies()
+        }.map { upcomingMoviesDto ->
+            upcomingMoviesDto.toListMovie()
         }
     }
 
+    // --------------------------- Search Movies ------------------------------
     override suspend fun getSearchedMovie(query: String): OperationStatus<List<MovieDto>> {
         return CallHelper.safeApiResponseCall {
             service.searchMovies(query = query)
         }
     }
 
+
+    // -------------------------------- Details ---------------------------
     override suspend fun getMovieDetails(movieId: String): OperationStatus<MovieDetailsDto> {
         return CallHelper.safeApiCall {
             service.getMovieDetails(movieId)
@@ -51,16 +60,18 @@ class MoviesRepositoryImpl : MoviesRepository {
         }
     }
 
+
+    // --------------------------------- ROOM ------------------------------------
     // Movie -> MovieDbo (Room save locally)
-    override suspend fun saveMovie(movie: Movies): OperationStatus<Unit> {
+    override suspend fun saveMovie(movies: Movies): OperationStatus<Unit> {
         return CallHelper.safeRoomCall {
-            movieDao.saveToFavorites(movie = movie.toMoviesDbo())
+            movieDao.saveToFavorites(movie = movies.toMoviesDbo())
         }
     }
 
-    override suspend fun deleteMovie(movie: Movies): OperationStatus<Unit> {
+    override suspend fun deleteMovie(movies: Movies): OperationStatus<Unit> {
         return CallHelper.safeRoomCall {
-            movieDao.deleteFromFavorites(movie = movie.toMoviesDbo())
+            movieDao.deleteFromFavorites(movie = movies.toMoviesDbo())
         }
     }
 

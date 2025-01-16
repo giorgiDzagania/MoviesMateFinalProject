@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.testproject.data.remote.dto.PopularMoviesDto
 import com.example.testproject.databinding.ItemPopularMoviesBinding
+import com.example.testproject.domain.model.Movies
 
 class PopularMoviesAdapter :
-    ListAdapter<PopularMoviesDto.ResultDto, PopularMoviesAdapter.HomePageViewHolder>(DiffUtilCallBack()) {
+    ListAdapter<Movies, PopularMoviesAdapter.HomePageViewHolder>(DiffUtilCallBack()) {
 
     var onItemClick: (movieId: Int) -> Unit = {}
 
@@ -30,31 +30,31 @@ class PopularMoviesAdapter :
 
     inner class HomePageViewHolder(private val binding: ItemPopularMoviesBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(result: PopularMoviesDto.ResultDto) {
-            val imageUrl = "https://image.tmdb.org/t/p/w500${result.backdrop_path}"
+        fun bind(movie: Movies) {
+            val imageUrl = "https://image.tmdb.org/t/p/w500${movie.image}"
             Glide.with(binding.moviePoster)
                 .load(imageUrl)
                 .into(binding.moviePoster)
-            binding.movieTitle.text = result.title
+            binding.movieTitle.text = movie.title
 
             binding.root.setOnClickListener {
-                result.id?.let {onItemClick.invoke(it)}
+                onItemClick.invoke(movie.id)
             }
 
         }
     }
 
-    class DiffUtilCallBack : DiffUtil.ItemCallback<PopularMoviesDto.ResultDto>() {
+    class DiffUtilCallBack : DiffUtil.ItemCallback<Movies>() {
         override fun areItemsTheSame(
-            oldItem: PopularMoviesDto.ResultDto,
-            newItem: PopularMoviesDto.ResultDto
+            oldItem: Movies,
+            newItem: Movies
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: PopularMoviesDto.ResultDto,
-            newItem: PopularMoviesDto.ResultDto
+            oldItem: Movies,
+            newItem: Movies
         ): Boolean {
             return oldItem == newItem
         }

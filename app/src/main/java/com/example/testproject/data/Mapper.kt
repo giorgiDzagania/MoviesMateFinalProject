@@ -1,13 +1,30 @@
 package com.example.testproject.data
 
 import com.example.testproject.data.local.entity.MovieDbo
+import com.example.testproject.data.remote.dto.PopularMoviesDto
 import com.example.testproject.data.remote.dto.UpcomingMoviesDto
 import com.example.testproject.domain.model.Movies
 
-// Dto to domain
-fun Movies.toMoviesDbo() = MovieDbo(
-    id, image, title
-)
+// --------------------------- API -----------------------
+
+// --- PopularMoviesDto to MovieList ----
+fun PopularMoviesDto.toListMovie(): List<Movies> {
+    return results?.map { it.toMovie() } ?: emptyList()
+}
+
+fun PopularMoviesDto.ResultDto.toMovie(): Movies {
+    return Movies(
+        id = id ?: 0,
+        image = backdrop_path.orEmpty(),
+        title = title.orEmpty()
+    )
+}
+
+
+// --- UpcomingMoviesDto to MovieList -----
+fun UpcomingMoviesDto.toListMovie(): List<Movies> {
+    return results?.map { it.toMovies() } ?: emptyList()
+}
 
 fun UpcomingMoviesDto.Result.toMovies(): Movies {
     return Movies(
@@ -16,6 +33,12 @@ fun UpcomingMoviesDto.Result.toMovies(): Movies {
         title = this.title
     )
 }
+
+// --------------------------------- Room ------------------------
+// Dto to domain
+fun Movies.toMoviesDbo() = MovieDbo(
+    id, image, title
+)
 
 // MovieDbo -> Movie
 fun MovieDbo.toMovies() = Movies(
