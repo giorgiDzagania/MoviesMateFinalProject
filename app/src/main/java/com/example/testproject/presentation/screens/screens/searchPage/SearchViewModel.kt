@@ -1,7 +1,6 @@
 package com.example.testproject.presentation.screens.screens.searchPage
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testproject.core.OperationStatus
@@ -41,6 +40,7 @@ class SearchViewModel : ViewModel() {
                 _searchedMovies.emit(status.value)
                 Log.d("SearchViewModel", "Fetched movies: ${status.value}")
             }
+
             is OperationStatus.Failure -> {
                 _errorMessage.emit("Failed to fetch data: ${status.exception}")
                 Log.e("SearchViewModel", "Error: ${status.exception}")
@@ -48,5 +48,4 @@ class SearchViewModel : ViewModel() {
         }
         _isLoading.emit(false)
     }
-
 }

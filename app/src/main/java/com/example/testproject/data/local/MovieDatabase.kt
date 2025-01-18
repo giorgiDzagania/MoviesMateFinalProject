@@ -18,8 +18,17 @@ abstract class MovieDatabase : RoomDatabase() {
                 context = context,
                 MovieDatabase::class.java,
                 "MovieDatabase"
-            ).build()
+            )
+                .fallbackToDestructiveMigration()
+                .build()
         }
+
+        // ------- Delete database ---
+        fun deleteDatabase(context: Context) {
+            context.deleteDatabase("MovieDatabase")
+        }
+
     }
 
 }
+

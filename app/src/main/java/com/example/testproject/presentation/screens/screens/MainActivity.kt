@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val user = FirebaseAuth.getInstance()
+     private val user = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //FirebaseAuth.getInstance().signOut()
+
+        FirebaseAuth.getInstance().signOut()
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment

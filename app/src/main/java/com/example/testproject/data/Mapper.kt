@@ -5,6 +5,7 @@ import com.example.testproject.data.remote.dto.PopularMoviesDto
 import com.example.testproject.data.remote.dto.UpcomingMoviesDto
 import com.example.testproject.domain.model.Movies
 
+
 // --------------------------- API -----------------------
 
 // --- PopularMoviesDto to MovieList ----
@@ -36,8 +37,8 @@ fun UpcomingMoviesDto.Result.toMovies(): Movies {
 
 // --------------------------------- Room ------------------------
 // Dto to domain
-fun Movies.toMoviesDbo() = MovieDbo(
-    id, image, title
+fun Movies.toMoviesDbo(userEmail: String) = MovieDbo(
+    id, image, title, userEmail
 )
 
 // MovieDbo -> Movie

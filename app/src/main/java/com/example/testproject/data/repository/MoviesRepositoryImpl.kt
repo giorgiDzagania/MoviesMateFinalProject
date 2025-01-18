@@ -14,10 +14,16 @@ import com.example.testproject.data.toMovies
 import com.example.testproject.data.toMoviesDbo
 import com.example.testproject.domain.model.Movies
 import com.example.testproject.domain.repository.MoviesRepository
+import com.google.firebase.auth.FirebaseAuth
 
 class MoviesRepositoryImpl : MoviesRepository {
     private val service = RetrofitInstance.moviesService
+   // private val db = MovieDatabase.deleteDatabase(MovieApplication.context)
     private val movieDao = MovieDatabase.create(MovieApplication.context).movieDao
+
+
+    // current user email for Room database
+    private val userEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
 
 
     // --------------------------- Popular Movie -----------------------------
@@ -54,6 +60,7 @@ class MoviesRepositoryImpl : MoviesRepository {
         }
     }
 
+    // Trailer
     override suspend fun getVideoTrailer(movieId: String): OperationStatus<VideosDto> {
         return CallHelper.safeApiCall {
             service.getVideoTrailer(movieId)
@@ -61,24 +68,26 @@ class MoviesRepositoryImpl : MoviesRepository {
     }
 
 
-    // --------------------------------- ROOM ------------------------------------
+    // --------------------------------- ROOM Database ------------------------------------
     // Movie -> MovieDbo (Room save locally)
     override suspend fun saveMovie(movies: Movies): OperationStatus<Unit> {
         return CallHelper.safeRoomCall {
-            movieDao.saveToFavorites(movie = movies.toMoviesDbo())
+            movieDao.saveToFavorites(
+                movie = movies.toMoviesDbo(userEmail),
+            )
         }
     }
 
     override suspend fun deleteMovie(movies: Movies): OperationStatus<Unit> {
         return CallHelper.safeRoomCall {
-            movieDao.deleteFromFavorites(movie = movies.toMoviesDbo())
+            movieDao.deleteFromFavorites(movie = movies.toMoviesDbo(userEmail))
         }
     }
 
     // MovieDbo -> Movie
     override suspend fun getAllSavedMovies(): OperationStatus<List<Movies>> {
         return CallHelper.safeRoomCall {
-            movieDao.getAllFavorites().map { movieDbo -> movieDbo.toMovies() }
+            movieDao.getAllFavorites(userEmail).map { movieDbo -> movieDbo.toMovies() }
         }
     }
 

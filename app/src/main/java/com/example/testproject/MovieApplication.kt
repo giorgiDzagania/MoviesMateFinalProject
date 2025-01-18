@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 
 class MovieApplication : Application() {
-
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
@@ -13,5 +12,4 @@ class MovieApplication : Application() {
     companion object {
         lateinit var context: Context
     }
-
 }

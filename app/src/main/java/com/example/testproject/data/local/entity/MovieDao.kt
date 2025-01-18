@@ -9,13 +9,16 @@ import androidx.room.Query
 @Dao
 interface MovieDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert()
     suspend fun saveToFavorites(movie: MovieDbo)
 
     @Delete()
     suspend fun deleteFromFavorites(movie: MovieDbo)
 
-    @Query("SELECT * FROM movies_table")
-    suspend fun getAllFavorites(): List<MovieDbo>
+    @Query("SELECT * FROM movies_table WHERE userEmail = :userEmail")
+    suspend fun getAllFavorites(userEmail: String): List<MovieDbo>
+
+    /* @Query("SELECT * FROM movies_table")
+     suspend fun getAllFavorites(): List<MovieDbo>*/
 
 }
